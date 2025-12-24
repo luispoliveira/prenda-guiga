@@ -1,6 +1,7 @@
 const carouselItems = document.querySelectorAll('.carousel-item');
 let currentIndex = 0;
-const IMAGE_DURATION = 5000; // 5 segundos para cada imagem
+const IMAGE_DURATION = 3000; // 3 segundos para cada imagem
+let carouselStarted = false;
 
 function showItem(index) {
   // Remove active class from all items
@@ -46,5 +47,20 @@ function nextItem() {
   showItem(currentIndex);
 }
 
-// Start the carousel
-showItem(currentIndex);
+// Botão de start para ativar áudio no mobile
+const startButton = document.getElementById('startButton');
+const startOverlay = document.getElementById('startOverlay');
+
+startButton.addEventListener('click', () => {
+  startOverlay.style.display = 'none';
+  carouselStarted = true;
+
+  // Preparar todos os vídeos para tocar com som
+  carouselItems.forEach((item) => {
+    if (item.tagName === 'VIDEO') {
+      item.muted = false;
+    }
+  });
+
+  showItem(currentIndex);
+});
