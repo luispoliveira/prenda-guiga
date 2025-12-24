@@ -22,7 +22,19 @@ function showItem(index) {
       nextItem();
     }, IMAGE_DURATION);
   } else if (currentItem.dataset.type === 'video') {
-    currentItem.play();
+    // Ativar som e reproduzir
+    currentItem.muted = false;
+    const playPromise = currentItem.play();
+
+    if (playPromise !== undefined) {
+      playPromise.catch((error) => {
+        console.log('Autoplay falhou:', error);
+        // Se falhar, tentar com muted
+        currentItem.muted = true;
+        currentItem.play();
+      });
+    }
+
     currentItem.onended = () => {
       nextItem();
     };
